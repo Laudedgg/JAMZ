@@ -95,7 +95,7 @@ REACT_APP_API_URL=http://localhost:3001/api
 NODE_ENV=development
 PORT=3001
 MONGODB_URI=mongodb://localhost:27018/jamz-dev
-JWT_SECRET=jamz-dev-secret-key-2025
+JWT_SECRET=YOUR_JWT_SECRET_HERE
 # ... other config
 ```
 

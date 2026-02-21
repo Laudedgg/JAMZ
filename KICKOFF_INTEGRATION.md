@@ -12,7 +12,7 @@ The following environment variables have been added to `.env`:
 
 ```env
 # Kickoff API Configuration
-KICKOFF_API_KEY=c4d12fdb-b877-4128-a153-12aae3ab2b17
+KICKOFF_API_KEY=YOUR_KICKOFF_API_KEY_HERE
 KICKOFF_PROJECT_SLUG=jamz-fun
 KICKOFF_API_URL=https://www.kickoff.fun/api
 ```
@@ -20,7 +20,7 @@ KICKOFF_API_URL=https://www.kickoff.fun/api
 ### API Details
 
 - **Project Slug**: `jamz-fun`
-- **API Key**: `c4d12fdb-b877-4128-a153-12aae3ab2b17`
+- **API Key**: `YOUR_KICKOFF_API_KEY_HERE`
 - **Task Type**: `connect_wallet`
 - **API Endpoint**: `https://www.kickoff.fun/api/projects/jamz-fun/verify-task`
 
@@ -86,7 +86,7 @@ This ensures:
 
 ```bash
 curl -X POST https://www.kickoff.fun/api/projects/jamz-fun/verify-task \
-  -H "X-API-Key: c4d12fdb-b877-4128-a153-12aae3ab2b17" \
+  -H "X-API-Key: YOUR_KICKOFF_API_KEY_HERE" \
   -H "Content-Type: application/json" \
   -d '{
     "walletAddress": "0x1234...5678",
