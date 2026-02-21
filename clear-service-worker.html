@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Service Worker</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-top: 0;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .success {
+            background: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            display: none;
+        }
+        .info {
+            background: #e7f3ff;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .step {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Clear Service Worker & Cache</h1>
+        
+        <div class="info">
+            <strong>Why do this?</strong><br>
+            The service worker is caching the old "Offline" page. This tool will clear all caches and unregister the service worker.
+        </div>
+
+        <div class="step">
+            <strong>Step 1:</strong> Click the button below to clear everything
+        </div>
+        
+        <button onclick="clearEverything()">🗑️ Clear Service Worker & Cache</button>
+        
+        <div id="success" class="success">
+            ✅ Successfully cleared! The page will reload in 2 seconds...
+        </div>
+
+        <div class="step">
+            <strong>Step 2:</strong> After clearing, do a hard refresh:
+            <ul>
+                <li><strong>Mac:</strong> Cmd + Shift + R</li>
+                <li><strong>Windows/Linux:</strong> Ctrl + Shift + R</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <strong>Alternative Method:</strong>
+            <ol>
+                <li>Open DevTools (F12)</li>
+                <li>Go to "Application" tab</li>
+                <li>Click "Service Workers" in the left sidebar</li>
+                <li>Click "Unregister" next to the service worker</li>
+                <li>Click "Clear storage" and check all boxes</li>
+                <li>Click "Clear site data"</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        async function clearEverything() {
+            console.log('🗑️ Starting cleanup...');
+            
+            try {
+                // Unregister all service workers
+                if ('serviceWorker' in navigator) {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    for (let registration of registrations) {
+                        await registration.unregister();
+                        console.log('✅ Unregistered service worker:', registration);
+                    }
+                }
+
+                // Clear all caches
+                if ('caches' in window) {
+                    const cacheNames = await caches.keys();
+                    for (let cacheName of cacheNames) {
+                        await caches.delete(cacheName);
+                        console.log('✅ Deleted cache:', cacheName);
+                    }
+                }
+
+                // Clear localStorage
+                localStorage.clear();
+                console.log('✅ Cleared localStorage');
+
+                // Clear sessionStorage
+                sessionStorage.clear();
+                console.log('✅ Cleared sessionStorage');
+
+                // Show success message
+                document.getElementById('success').style.display = 'block';
+
+                // Reload after 2 seconds
+                setTimeout(() => {
+                    window.location.href = 'http://localhost:3000';
+                }, 2000);
+
+            } catch (error) {
+                console.error('❌ Error during cleanup:', error);
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // Auto-run on load if URL has ?auto parameter
+        if (window.location.search.includes('auto')) {
+            clearEverything();
+        }
+    </script>
+</body>
+</html>
+

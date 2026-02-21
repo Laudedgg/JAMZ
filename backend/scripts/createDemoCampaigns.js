@@ -1,0 +1,122 @@
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import Artist from '../models/artist.js';
+import OpenVerseCampaign from '../models/openVerseCampaign.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.join(__dirname, '../.env') });
+
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27018/jamz-dev';
+
+async function createDemoCampaigns() {
+  try {
+    console.log('🔗 Connecting to MongoDB...');
+    await mongoose.connect(MONGODB_URI);
+    console.log('✅ Connected to MongoDB');
+
+    // Get first artist
+    const artist = await Artist.findOne();
+    if (!artist) {
+      console.error('❌ No artists found in database');
+      process.exit(1);
+    }
+
+    console.log(`📝 Using artist: ${artist.name}`);
+
+    // Delete existing demo campaigns
+    await OpenVerseCampaign.deleteMany({ title: { $regex: 'Demo Campaign' } });
+    console.log('🗑️  Cleared existing demo campaigns');
+
+    // Create demo campaigns
+    const campaigns = [
+      {
+        title: 'Demo Campaign - Neon Dreams',
+        description: 'This is a demo campaign featuring the latest track from Neon Dreams. Share and earn rewards!',
+        artistId: artist._id,
+        youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        spotifyUrl: 'https://open.spotify.com/track/11dFghVXANMlKmJXsNCQvb',
+        appleUrl: 'https://music.apple.com/us/album/never-gonna-give-you-up/1440884369?i=1440884371',
+        thumbnailImage: 'campaigns/demo-thumb.png',
+        prizePool: { amount: 1000, currency: 'JAMZ' },
+        maxParticipants: 100,
+        maxWinners: 5,
+        startDate: new Date('2025-11-16'),
+        endDate: new Date('2025-12-16'),
+        isActive: true,
+        status: 'active',
+        allowedPlatforms: ['instagram', 'tiktok', 'youtube'],
+        submissionGuidelines: 'Share the track on your social media and tag @jamzfun',
+        prizeDistribution: [
+          { rank: 1, amount: 500 },
+          { rank: 2, amount: 300 },
+          { rank: 3, amount: 200 }
+        ],
+        requireYouTubeWatch: true,
+        requireShareAction: true,
+        shareRewardJamz: 10,
+        watchRewardJamz: 5,
+        maxReferralRewards: 100,
+        maxReferralRewardsPerUser: 5,
+        totalSubmissions: 0,
+        totalParticipants: 0,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        title: 'Demo Campaign - Cosmic Beats',
+        description: 'Join the cosmic journey with Cosmic Beats! Share this track and win amazing prizes.',
+        artistId: artist._id,
+        youtubeUrl: 'https://www.youtube.com/watch?v=jNQXAC9IVRw',
+        spotifyUrl: 'https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT',
+        appleUrl: 'https://music.apple.com/us/album/test/1440884369?i=1440884371',
+        thumbnailImage: 'campaigns/demo-thumb.png',
+        prizePool: { amount: 500, currency: 'JAMZ' },
+        maxParticipants: 50,
+        maxWinners: 3,
+        startDate: new Date('2025-11-16'),
+        endDate: new Date('2025-12-01'),
+        isActive: true,
+        status: 'active',
+        allowedPlatforms: ['instagram', 'tiktok'],
+        submissionGuidelines: 'Create a video with this track and share it!',
+        prizeDistribution: [
+          { rank: 1, amount: 250 },
+          { rank: 2, amount: 150 },
+          { rank: 3, amount: 100 }
+        ],
+        requireYouTubeWatch: false,
+        requireShareAction: true,
+        shareRewardJamz: 5,
+        watchRewardJamz: 0,
+        maxReferralRewards: 50,
+        maxReferralRewardsPerUser: 3,
+        totalSubmissions: 0,
+        totalParticipants: 0,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ];
+
+    // Insert campaigns
+    const created = await OpenVerseCampaign.insertMany(campaigns);
+    console.log(`✅ Created ${created.length} demo campaign(s)`);
+
+    created.forEach(campaign => {
+      console.log(`   - ${campaign.title} (ID: ${campaign._id})`);
+    });
+
+    console.log('\n✨ Demo campaigns created successfully!');
+    await mongoose.disconnect();
+    process.exit(0);
+  } catch (error) {
+    console.error('❌ Error:', error.message);
+    process.exit(1);
+  }
+}
+
+createDemoCampaigns();
+

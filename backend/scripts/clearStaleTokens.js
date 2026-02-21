@@ -1,0 +1,43 @@
+// Script to help users clear stale authentication tokens
+// This script provides instructions for clearing browser storage
+
+console.log('🔧 Artist Authentication Token Fix');
+console.log('=====================================');
+console.log('');
+console.log('The "Invalid token" errors you\'re experiencing are caused by stale');
+console.log('authentication tokens stored in your browser from previous server sessions.');
+console.log('');
+console.log('To fix this issue, please follow these steps:');
+console.log('');
+console.log('📋 SOLUTION STEPS:');
+console.log('');
+console.log('1. Open your browser Developer Tools:');
+console.log('   - Chrome/Edge: Press F12 or Ctrl+Shift+I (Cmd+Option+I on Mac)');
+console.log('   - Firefox: Press F12 or Ctrl+Shift+I (Cmd+Option+I on Mac)');
+console.log('');
+console.log('2. Go to the "Application" tab (Chrome) or "Storage" tab (Firefox)');
+console.log('');
+console.log('3. In the left sidebar, find "Local Storage" and click on your site URL');
+console.log('   (likely http://localhost:5174)');
+console.log('');
+console.log('4. Clear these specific keys:');
+console.log('   ❌ artist-auth-storage');
+console.log('   ❌ auth_token (if present)');
+console.log('');
+console.log('5. Alternatively, you can clear ALL local storage by:');
+console.log('   - Right-clicking in the Local Storage area');
+console.log('   - Selecting "Clear" or "Delete All"');
+console.log('');
+console.log('6. Refresh the page (F5 or Ctrl+R)');
+console.log('');
+console.log('7. Try logging in again with your artist credentials');
+console.log('');
+console.log('✅ After clearing the tokens, the authentication should work correctly!');
+console.log('');
+console.log('🔍 TECHNICAL DETAILS:');
+console.log('- The JWT_SECRET was updated on the server');
+console.log('- Old tokens signed with the previous secret are now invalid');
+console.log('- New tokens will be created with the correct secret after login');
+console.log('');
+console.log('If you continue to experience issues after clearing tokens,');
+console.log('please contact support with the specific error messages.');

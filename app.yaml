@@ -1,0 +1,56 @@
+runtime: nodejs20
+
+# Instance configuration
+instance_class: F2
+automatic_scaling:
+  min_instances: 1
+  max_instances: 10
+  target_cpu_utilization: 0.6
+
+# Environment variables
+env_variables:
+  NODE_ENV: production
+  PORT: 8080
+  # Temporary values for initial deployment - replace with production values
+  MONGODB_URI: "mongodb+srv://placeholder:placeholder@cluster.mongodb.net/jamz?retryWrites=true&w=majority"
+  JWT_SECRET: "jamz-production-secret-2025-replace-with-secure-key"
+  MAGIC_SECRET_KEY: "sk_live_placeholder_replace_with_real_key"
+
+# Network settings
+network:
+  session_affinity: true
+
+# Health check configuration
+readiness_check:
+  path: "/api/health"
+  check_interval_sec: 5
+  timeout_sec: 4
+  failure_threshold: 2
+  success_threshold: 2
+  app_start_timeout_sec: 300
+
+liveness_check:
+  path: "/api/health"
+  check_interval_sec: 30
+  timeout_sec: 4
+  failure_threshold: 4
+  success_threshold: 2
+
+# Static file handling
+handlers:
+  # Serve static frontend files
+  - url: /static
+    static_dir: backend/public/dist/assets
+    secure: always
+    
+  # Serve media uploads
+  - url: /media
+    static_dir: backend/public/media
+    secure: always
+    
+  # Serve main app
+  - url: /.*
+    script: auto
+    secure: always
+
+

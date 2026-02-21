@@ -1,0 +1,37 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "update-users": "node scripts/updateExistingUsers.js",
+    "create-admin": "node scripts/createAdminUser.js",
+    "create-sample-data": "node scripts/createSampleData.js",
+    "setup-db": "node scripts/setupDatabase.js",
+    "add-youtube-tracks": "node scripts/addYouTubeTracks.js",
+    "ngrok": "node ngrokServer.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.12.2",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.10.2",
+    "multer": "^1.4.5-lts.1",
+    "node-fetch": "^3.3.2",
+    "socket.io": "^4.8.1",
+    "stripe": "^19.1.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "ngrok": "^5.0.0-beta.2"
+  }
+}
