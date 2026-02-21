@@ -932,7 +932,6 @@ function ApplyModal({ onClose }: { onClose: () => void }) {
           </div>
           <div>
             <h2 className="text-xl font-bold">Apply for Campaign</h2>
-            <p className="text-white/60 text-sm">Submit your track for MFT launch</p>
           </div>
         </div>
 
